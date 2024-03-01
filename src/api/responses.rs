@@ -65,33 +65,33 @@ pub fn success(body: Vec<u8>) -> Response {
 impl ApiResponse {
     fn with_json_header(mut self) -> Self {
         self.headers.insert(String::from("content-type"), String::from("application/vnd.api+json"));
-        return self;
+        self
     }
 
     fn with_status(mut self, status_code: StatusCode) -> Self {
         self.status = status_code;
-        return self;
+        self
     }
 
     fn with_body(mut self, body: Vec<u8>) -> Self {
         self.body = body;
-        return self;
+        self
     }
 
     fn with_headers(mut self, headers: HashMap<String, String>) -> Self {
-        self.headers = headers;
-        return self;
+        self.headers.extend(headers);
+        self
     }
 }
 
 impl IntoResponse for ApiResponse {
     fn into_response(self) -> Response {
         let mut response = Response::builder().status(self.status);
-        if self.headers.len() > 0 {
+        if !self.headers.is_empty() {
             for (key, val) in self.headers.iter() {
                 response = response.header(key, val)
             }
         }
-        return response.body(Body::from(self.body)).unwrap()
+        response.body(Body::from(self.body)).unwrap()
     }
 }

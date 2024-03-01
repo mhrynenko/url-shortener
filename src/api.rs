@@ -1,13 +1,13 @@
 mod handlers;
-mod main;
+mod responses;
 
-use hyper::body::{Body, Bytes};
-use hyper::{Request, Response};
+use handlers::{
+    short_link::short_link,
+};
 use tokio::net::TcpListener;
-use http_body_util::{combinators::BoxBody, BodyExt};
 use axum::{
-    http::StatusCode, Router,
-    routing::get,
+    Router,
+    routing::post,
 };
 
 
@@ -25,6 +25,6 @@ impl Api {
 
     fn router(&self) -> Router {
         Router::new()
-            .route("/", get(handlers::reverse_body::reverse_body))
+            .route("/", post(short_link))
     }
 }

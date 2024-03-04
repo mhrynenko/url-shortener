@@ -1,7 +1,11 @@
 mod api;
+mod data;
+mod config;
 
 #[tokio::main]
 async fn main() {
-    let api = api::Api {addr: String::from("127.0.0.1:3000") };
+    let cfg = config::Config::new().unwrap();
+
+    let api = api::Api {addr: String::from(format!("{}:{}", cfg.listener.host, cfg.listener.port)) };
     api.run().await;
 }

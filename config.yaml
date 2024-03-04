@@ -1,0 +1,6 @@
+db:
+  url: "postgres://gitlab:gitlab@localhost:8733/gitlab?sslmode=disable"
+
+listener:
+  host: "127.0.0.1"
+  port: 3000
